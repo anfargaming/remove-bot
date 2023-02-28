@@ -1,25 +1,31 @@
+import os
 import logging
-import telegram
 from telegram.ext import Updater, MessageHandler, Filters
 from bot import remove_russian_names
 from database import Database
-from config import Config
 
 # Set up logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
-logger = logging.getLogger(name)
+logger = logging.getLogger(__name__)
+
+# Get bot token from environment variable
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
+
+# Get MongoDB URL from environment variable
+MONGO_URL = os.environ.get('MONGO_URL')
+
+# Get API ID and API HASH from environment variable
+API_ID = int(os.environ.get('API_ID'))
+API_HASH = os.environ.get('API_HASH')
+
+# Initialize database
+db = Database(MONGO_URL)
 
 def main():
     """Start the Telegram bot."""
-    # Load configuration from Config class
-    config = Config()
-
-    # Connect to the database
-    db = Database(config.DATABASE_URL)
-
     # Create the Telegram bot
-    updater = Updater(config.BOT_TOKEN, use_context=True)
+    updater = Updater(BOT_TOKEN, use_context=True)
     dp = updater.dispatcher
 
     # Add message handler to remove users with Russian alphabet in their names
@@ -30,5 +36,5 @@ def main():
     updater.start_polling()
     updater.idle()
 
-if name == 'main':
+if __name__ == '__main__':
     main()
