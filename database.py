@@ -6,7 +6,7 @@ if not MONGODB_URL:
     raise ValueError('MONGODB_URL environment variable not set')
 
 client = MongoClient(MONGODB_URL)
-db = client.get_database('your_database_name_here')
+db = client.get_database('Cluster0')
 users_collection = db.get_collection('users')
 
 
