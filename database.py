@@ -1,4 +1,3 @@
-
 import os
 from pymongo import MongoClient
 
@@ -7,7 +6,9 @@ if not MONGODB_URL:
     raise ValueError('MONGODB_URL environment variable not set')
 
 client = MongoClient(MONGODB_URL)
-db = client.get_default_database()
+db = client.get_database()
+if not db:
+    raise ValueError('No default database name defined or provided')
 users_collection = db.get_collection('users')
 
 
