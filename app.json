@@ -22,7 +22,7 @@
         "BOT_TOKEN": {
             "description": "Get this from @BotFather"
         },
-        "DATABASE_URL": {
+        "MANGODB_URL": {
             "description": "MongoDB URI for Saving Chat Settings."
         }
     },
