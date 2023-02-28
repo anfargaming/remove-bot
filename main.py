@@ -16,7 +16,7 @@ BOT_TOKEN = os.environ.get('BOT_TOKEN')
 MONGO_URL = os.environ.get('MONGODB_URL')
 
 # Initialize database
-db = Database(MONGO_URL)
+db = Database(MONGO_URL, "Cluster0")
 
 def main():
     """Start the Telegram bot."""
