@@ -13,11 +13,7 @@ logger = logging.getLogger(__name__)
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 
 # Get MongoDB URL from environment variable
-MONGO_URL = os.environ.get('MONGO_URL')
-
-# Get API ID and API HASH from environment variable
-API_ID = int(os.environ.get('API_ID'))
-API_HASH = os.environ.get('API_HASH')
+MONGO_URL = os.environ.get('MONGODB_URL')
 
 # Initialize database
 db = Database(MONGO_URL)
@@ -29,7 +25,7 @@ def main():
     dp = updater.dispatcher
 
     # Add message handler to remove users with Russian alphabet in their names
-    dp.add_handler(MessageHandler(Filters.text, remove_russian_names, db))
+    dp.add_handler(MessageHandler(Filters.text, remove_russian_names, pass_args=True, pass_job_queue=True, pass_chat_data=True, database=db))
 
     # Start the bot
     logger.info("Starting bot...")
