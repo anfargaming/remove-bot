@@ -1,26 +1,21 @@
 import os
 from pymongo import MongoClient
 
-MONGODB_URL = os.environ.get('MONGODB_URL')
-if not MONGODB_URL:
-    raise ValueError('MONGODB_URL environment variable not set')
+class Database:
+    def __init__(self, url):
+        self.client = MongoClient(url)
+        self.db = self.client.get_database()
+        self.users_collection = self.db.get_collection('users')
 
-client = MongoClient(MONGODB_URL)
-db = client.get_database()
-users_collection = db.get_collection('users')
+    def add_user(self, user_id, user_name):
+        user = {'_id': user_id, 'name': user_name}
+        result = self.users_collection.insert_one(user)
+        return result.inserted_id
 
+    def get_user(self, user_id):
+        user = self.users_collection.find_one({'_id': user_id})
+        return user
 
-def add_user(user_id, user_name):
-    user = {'_id': user_id, 'name': user_name}
-    result = users_collection.insert_one(user)
-    return result.inserted_id
-
-
-def get_user(user_id):
-    user = users_collection.find_one({'_id': user_id})
-    return user
-
-
-def remove_user(user_id):
-    result = users_collection.delete_one({'_id': user_id})
-    return result.deleted_count
+    def remove_user(self, user_id):
+        result = self.users_collection.delete_one({'_id': user_id})
+        return result.deleted_count
